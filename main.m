@@ -22,7 +22,7 @@ useGPU = 1;     % Use GPU to accelerate computation. Effective when Nx, Ny is la
 
 
 z = [-100 :4: 100] * 1e-6 ;   % Depth level requested in 3D region.
-nfocus = 20;                % z(nfocus) denotes the depth of the focal plane.
+nfocus = 25;                % z(nfocus) denotes the depth of the focal plane.
 thresholdh = 200000000;          % Intensity required to activate neuron.
 thresholdl = 0;             % Intensity required to not to activate neuron.
 
@@ -151,16 +151,18 @@ source2 = reshape(phase_source2(Nx*Ny+1:end), [Nx, Ny]);
 toc;
 
 %% plot
+source = zeros(Nx, Ny);
+source(Nx/2, Ny/2) = 1;
 Ividmeas = zeros(Nx, Ny, numel(z));
 usenoGPU = 0;
 figure();
 for i = 1:numel(z)
     HStack = GenerateFresnelPropagationStack(Nx,Ny,z(i) - z(nfocus), lambda, psXHolograph,psYHolograph, usenoGPU);
-    imagez = fresnelProp(phase2, source2, HStack);
+    imagez = fresnelProp(phase2, source, HStack);
     Ividmeas(:,:,i) = imagez;
     imagesc(imagez);colormap gray;title(sprintf('Distance z %d', z(i)));
     colorbar;
-    caxis([0, 5e6]);
+    %caxis([0, 5e6]);
     pause(0.1);
 end
 %save(['phaseonly_result_' tag '.mat'], 'source1', 'phase1');

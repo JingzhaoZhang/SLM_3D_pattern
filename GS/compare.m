@@ -35,7 +35,7 @@ for i = 1:numel(z)
     caxis([0, 150]);
 %     filename = sprintf('pointTarget%d.png', i);
 %     print(['data/' filename], '-dpng')
-    %pause(0.1);
+    pause(0.1);
 end
 
 
@@ -54,7 +54,7 @@ for i = 1:numel(z)
     caxis([0, 150]);
 %     filename = sprintf('pointTarget%d.png', i);
 %     print(['data/' filename], '-dpng')
-    %pause(0.1);
+    pause(0.1);
 end
 
 

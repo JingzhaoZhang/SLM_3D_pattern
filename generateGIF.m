@@ -22,18 +22,18 @@ thresholdh = 20000000;          % Intensity required to activate neuron.
 thresholdl = 0;             % Intensity required to not to activate neuron.
 
 %% Generate GIF
-filename = 'phaseonly_result_slmFocal_20_600by800_coaxisPoints';
+filename = 'source_phase_result_slmFocal_20_600by800_A_randomsource';
 load(filename)
 Ividmeas = zeros(Nx, Ny, numel(z));
 usenoGPU = 0;
-high = 2000;
+high = 3e4;
 
 source = ones(Nx, Ny)/sqrt(Nx*Ny);
 
-figure();
+%figure();
 for i = 1:numel(z)
     HStack = GenerateFresnelPropagationStack(Nx,Ny,z(i) - z(nfocus), lambda, psXHolograph,psYHolograph, usenoGPU);
-    imagez = fresnelProp(phase1, source, HStack);
+    imagez = fresnelProp(phase2, source2, HStack);
     Ividmeas(:,:,i) = imagez;
 %    imagesc(imagez);colormap gray;title(sprintf('Distance z %d', z(i)));
     colorbar;
@@ -42,9 +42,9 @@ for i = 1:numel(z)
 %     print(['data/' filename], '-dpng')
 %    pause(0.1);
 end
-
+figure();imagesc(source2);colorbar
 Ividmeas(Ividmeas > high) = high;
-Ividmeas = floor(Ividmeas/400 * 63);
+Ividmeas = floor(Ividmeas/high * 63);
 
 
 % hlimit = max(max(max(Ividmeas)));
@@ -53,7 +53,7 @@ Ividmeas = floor(Ividmeas/400 * 63);
 % Ividmeas(Ividmeas > 63) = 63;
 map = colormap(gray);
 
-gifname = ['gif/' filename  '.gif'];
+gifname = ['GS/gif/' filename  '.gif'];
 for i = 1:numel(z)
     
     if i == 1;
